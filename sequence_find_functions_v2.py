@@ -8,10 +8,20 @@ from Bio.Seq import Seq
 today = datetime.datetime.today()
 today_date = f"{today.year}_{today.month}_{today.day}"
 
-work_dir = os.path.dirname(os.path.abspath("sequence_find_functions.py"))
-input_fold = os.path.join(work_dir, "Input_files")
-temp_fold = os.path.join(input_fold, "tmp_files")
-output_fold = os.path.join(work_dir, "Output_files")
+def create_folder(work_path):
+    if os.path.exists(work_path) == False:
+        print("Cannot find program file.")
+    input_fold = os.path.join(work_path, "Input_files")
+    temp_fold = os.path.join(input_fold, "tmp_files")
+    output_fold = os.path.join(work_dir, "Output_files")
+    for folder in input_fold, temp_fold, output_fold:
+        if os.path.exists(folder):
+            break
+        else:
+            os.makedirs(folder)
+        
+work_dir = os.path.dirname(os.path.abspath("sequence_find_functions_v2.py"))
+create_folder(work_path)
 
 class Meta():
     '''
@@ -19,12 +29,6 @@ class Meta():
     to be searched for, the distance from the start codon to be searched in, how many 
     instances of the motif are required, and what maximum distances apart from each other 
     they must be.
-
-    Because of the stupid way I wrote this program, these attributes are packaged into
-    a dictionary.  They are then intended to be passed to a Folder class (which doesn't
-    use them), which creates and passes them to a ReadFile class (which doesn't use them)
-    which finally creates and passes them to a Sequence class (which does use them).  In
-    my defense, this was my first time trying to code in an OOP manner.
     '''
     def __init__(self):
         self.meta_dict = {}
